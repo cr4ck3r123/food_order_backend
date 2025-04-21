@@ -1,0 +1,30 @@
+Metodos de Authenticação Utilizando JWT 
+
+
+
+    if (!token) {
+        // Se não houver token, redireciona para a página de login
+        window.location.href = 'login.php';  // Altere o caminho para a página de login
+        return;
+    }
+
+    // Faz a requisição para obter os dados do usuário
+    const response = await fetch(API_URL + '?action=get_user_by_id', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,  // Envia o token no cabeçalho
+        },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        // Exibe os dados do usuário na página
+        document.getElementById('usuario-nome').innerText = data.usuario.nome;
+        document.getElementById('usuario-email').innerText = data.usuario.email;
+        // Adicione outros campos conforme necessário
+    } else {
+        // Caso ocorra um erro
+        document.getElementById('response').innerText = 'Erro ao obter dados do usuário: ' + (data.error || 'Erro desconhecido');
+    }
